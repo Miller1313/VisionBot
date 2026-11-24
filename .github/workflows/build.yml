@@ -1,4 +1,3 @@
-
 name: Build VisionBot APK
 
 on:
@@ -22,18 +21,11 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      
-      - name: Prepare Android SDK
-        run: |
-          export ANDROID_HOME=/usr/local/lib/android/sdk
-          export ANDROID_SDK_ROOT=$ANDROID_HOME
-          export PATH=$ANDROID_HOME/cmdline-tools/16.0/bin:$ANDROID_HOME/platform-tools:$PATH
-          echo "ANDROID_HOME=$ANDROID_HOME" >> $GITHUB_ENV
-          echo "$ANDROID_HOME/cmdline-tools/16.0/bin" >> $GITHUB_PATH
-          echo "$ANDROID_HOME/platform-tools" >> $GITHUB_PATH
-          yes | $ANDROID_HOME/cmdline-tools/16.0/bin/sdkmanager --licenses || true
-          $ANDROID_HOME/cmdline-tools/16.0/bin/sdkmanager "platforms;android-34" "build-tools;34.0.0"
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
 
+      - name: Install Android components
+        run: sdkmanager "platforms;android-34" "build-tools;34.0.0"
 
       - name: Install dependencies
         run: npm install
